@@ -9,7 +9,10 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
 import java.util.Arrays;
-
+/**
+ * 通过socket数据源，去请求一个socket服务（doit01:9999）得到数据流
+ * 然后统计数据流中出现的单词及其个数 Java Lambda 表达式实现
+ */
 public class MyFirstFlinkDemo {
     public static void main(String[] args) throws Exception {
         //LocalStreamEnvironment只能在local模式运行，通常用于本地测试
