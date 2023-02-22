@@ -1,4 +1,4 @@
-package cn.flink.java.java;
+package cn.flink.java;
 
 import com.alibaba.fastjson.JSON;
 import lombok.AllArgsConstructor;
@@ -23,7 +23,7 @@ import java.util.List;
  * @Site: www.51doit.com
  * @QQ: 657270652
  * @Date: 2022/4/23
- * @Desc: å„ç±»transformationç®—å­çš„apiæ¼”ç¤º
+ * @Desc: ¸÷ÀàtransformationËã×ÓµÄapiÑİÊ¾
  **/
 public class _07_Transformation_Demos {
 
@@ -46,24 +46,24 @@ public class _07_Transformation_Demos {
 
 
         /**
-         * mapç®—å­çš„æ¼”ç¤º
+         * mapËã×ÓµÄÑİÊ¾
          */
-        // æŠŠæ¯æ¡jsonæ•°æ®ï¼Œè½¬æˆjavabeanæ•°æ®
+        // °ÑÃ¿ÌõjsonÊı¾İ£¬×ª³ÉjavabeanÊı¾İ
         SingleOutputStreamOperator<UserInfo> beanStream = streamSource.map(json -> JSON.parseObject(json, UserInfo.class));
         /*beanStream.print();*/
 
 
         /**
-         * filterç®—å­çš„æ¼”ç¤º
-         *   è¯·è¿‡æ»¤æ‰å¥½å‹è¶…è¿‡3ä½çš„ç”¨æˆ·æ•°æ®
+         * filterËã×ÓµÄÑİÊ¾
+         *   Çë¹ıÂËµôºÃÓÑ³¬¹ı3Î»µÄÓÃ»§Êı¾İ
          */
         SingleOutputStreamOperator<UserInfo> filtered = beanStream.filter(bean -> bean.getFriends().size() <= 3);
         /*filtered.print();*/
 
 
         /**
-         * flatmapç®—å­çš„æ¼”ç¤º
-         *  æŠŠæ¯ä¸ªç”¨æˆ·çš„å¥½å‹ä¿¡æ¯ï¼Œå…¨éƒ¨æå–å‡ºæ¥ï¼ˆå¸¦ä¸Šç”¨æˆ·è‡ªèº«çš„ä¿¡æ¯ï¼‰ï¼Œå¹¶ä¸”å‹å¹³ï¼Œæ”¾å…¥ç»“æœæµä¸­
+         * flatmapËã×ÓµÄÑİÊ¾
+         *  °ÑÃ¿¸öÓÃ»§µÄºÃÓÑĞÅÏ¢£¬È«²¿ÌáÈ¡³öÀ´£¨´øÉÏÓÃ»§×ÔÉíµÄĞÅÏ¢£©£¬²¢ÇÒÑ¹Æ½£¬·ÅÈë½á¹ûÁ÷ÖĞ
          *  {"uid":1,"name":"zs","gender":"male","friends":[{"fid":2,"name":"aa"},{"fid":3,"name":"bb"}]}
          *  =>
          *  {"uid":1,"name":"zs","gender":"male","fid":2,"fname":"aa"}
@@ -72,7 +72,7 @@ public class _07_Transformation_Demos {
         SingleOutputStreamOperator<UserFriendInfo> flatten = filtered.flatMap(new FlatMapFunction<UserInfo, UserFriendInfo>() {
             @Override
             public void flatMap(UserInfo value, Collector<UserFriendInfo> out) throws Exception {
-                // æŠŠfriendsåˆ—è¡¨æå–å‡ºæ¥ï¼Œä¸€ä¸ªä¸€ä¸ªåœ°è¿”å›
+                // °ÑfriendsÁĞ±íÌáÈ¡³öÀ´£¬Ò»¸öÒ»¸öµØ·µ»Ø
                 List<FriendInfo> friends = value.getFriends();
                 /* friends.forEach(x->out.collect(new UserFriendInfo(value.getUid(), value.getName(), value.getGender(),x.getFid(),x.getName() )));*/
                 for (FriendInfo x : friends) {
@@ -84,21 +84,21 @@ public class _07_Transformation_Demos {
 
 
         /**
-         * keyByç®—å­çš„æ¼”ç¤º
-         * å¯¹ä¸Šä¸€æ­¥çš„ç»“æœï¼ŒæŒ‰ç”¨æˆ·æ€§åˆ«åˆ†ç»„
+         * keyByËã×ÓµÄÑİÊ¾
+         * ¶ÔÉÏÒ»²½µÄ½á¹û£¬°´ÓÃ»§ĞÔ±ğ·Ö×é
          *
-         * æ»šåŠ¨èšåˆç®—å­ï¼ˆåªèƒ½åœ¨ KeyedStream æµä¸Šè°ƒç”¨ï¼‰ï¼š  sumç®—å­ ã€ minç®—å­ ã€ minByç®—å­ ã€ maxç®—å­ã€  maxByç®—å­ã€ reduceç®—å­çš„æ¼”ç¤º
-         * å¹¶ç»Ÿè®¡ï¼š
-         *    å„æ€§åˆ«ç”¨æˆ·çš„å¥½å‹æ€»æ•°
+         * ¹ö¶¯¾ÛºÏËã×Ó£¨Ö»ÄÜÔÚ KeyedStream Á÷ÉÏµ÷ÓÃ£©£º  sumËã×Ó ¡¢ minËã×Ó ¡¢ minByËã×Ó ¡¢ maxËã×Ó¡¢  maxByËã×Ó¡¢ reduceËã×ÓµÄÑİÊ¾
+         * ²¢Í³¼Æ£º
+         *    ¸÷ĞÔ±ğÓÃ»§µÄºÃÓÑ×ÜÊı
          *
-         *    å„æ€§åˆ«ä¸­ï¼Œç”¨æˆ·å¥½å‹æ•°é‡æœ€å¤§å€¼
-         *    å„æ€§åˆ«ä¸­ï¼Œç”¨æˆ·å¥½å‹æ•°é‡æœ€å°å€¼
+         *    ¸÷ĞÔ±ğÖĞ£¬ÓÃ»§ºÃÓÑÊıÁ¿×î´óÖµ
+         *    ¸÷ĞÔ±ğÖĞ£¬ÓÃ»§ºÃÓÑÊıÁ¿×îĞ¡Öµ
          *
-         *    æ±‚å„æ€§åˆ«ä¸­ï¼Œå¥½å‹æ•°é‡æœ€å¤§çš„é‚£ä¸ªäºº
-         *    æ±‚å„æ€§åˆ«ä¸­ï¼Œå¥½å‹æ•°é‡æœ€å°çš„é‚£ä¸ªäºº
+         *    Çó¸÷ĞÔ±ğÖĞ£¬ºÃÓÑÊıÁ¿×î´óµÄÄÇ¸öÈË
+         *    Çó¸÷ĞÔ±ğÖĞ£¬ºÃÓÑÊıÁ¿×îĞ¡µÄÄÇ¸öÈË
          *
          */
-        // å„æ€§åˆ«ç”¨æˆ·çš„å¥½å‹æ€»æ•°
+        // ¸÷ĞÔ±ğÓÃ»§µÄºÃÓÑ×ÜÊı
         KeyedStream<Tuple2<String, Integer>, String> keyedStream = flatten.map(bean -> Tuple2.of(bean.getGender(), 1)).returns(new TypeHint<Tuple2<String, Integer>>() {
                 })
                 .keyBy(tp -> tp.f0);
@@ -107,12 +107,12 @@ public class _07_Transformation_Demos {
                 .sum(1);
         /*genderFriendCount.print();*/
 
-        // å„æ€§åˆ«ä¸­ï¼Œç”¨æˆ·å¥½å‹æ•°é‡æœ€å¤§å€¼
+        // ¸÷ĞÔ±ğÖĞ£¬ÓÃ»§ºÃÓÑÊıÁ¿×î´óÖµ
 
         /**
-         * max / maxBy  éƒ½æ˜¯æ»šåŠ¨èšåˆï¼š  ç®—å­ä¸ä¼šæŠŠæ”¶åˆ°çš„æ‰€æœ‰æ•°æ®å…¨éƒ¨æ”’èµ·æ¥ï¼›è€Œæ˜¯åªåœ¨çŠ¶æ€ä¸­è®°å½•ä¸Šä¸€æ¬¡çš„èšåˆå€¼ï¼Œç„¶åå½“æ–°æ•°æ®åˆ°è¾¾çš„æ—¶å€™ï¼Œä¼šæ ¹æ®é€»è¾‘å»æ›´æ–° çŠ¶æ€ä¸­è®°å½•çš„èšåˆå€¼ï¼Œå¹¶è¾“å‡ºæœ€æ–°çŠ¶æ€æ•°æ®
-         * max / maxBy  åŒºåˆ«ï¼š æ›´æ–°çŠ¶æ€çš„é€»è¾‘ï¼  maxåªæ›´æ–°è¦æ±‚æœ€å¤§å€¼çš„å­—æ®µï¼›  è€Œ maxBy ä¼šæ›´æ–°æ•´æ¡æ•°æ®ï¼›
-         * åŒç†ï¼Œminå’ŒminByä¹Ÿå¦‚æ­¤
+         * max / maxBy  ¶¼ÊÇ¹ö¶¯¾ÛºÏ£º  Ëã×Ó²»»á°ÑÊÕµ½µÄËùÓĞÊı¾İÈ«²¿ÔÜÆğÀ´£»¶øÊÇÖ»ÔÚ×´Ì¬ÖĞ¼ÇÂ¼ÉÏÒ»´ÎµÄ¾ÛºÏÖµ£¬È»ºóµ±ĞÂÊı¾İµ½´ïµÄÊ±ºò£¬»á¸ù¾İÂß¼­È¥¸üĞÂ ×´Ì¬ÖĞ¼ÇÂ¼µÄ¾ÛºÏÖµ£¬²¢Êä³ö×îĞÂ×´Ì¬Êı¾İ
+         * max / maxBy  Çø±ğ£º ¸üĞÂ×´Ì¬µÄÂß¼­£¡  maxÖ»¸üĞÂÒªÇó×î´óÖµµÄ×Ö¶Î£»  ¶ø maxBy »á¸üĞÂÕûÌõÊı¾İ£»
+         * Í¬Àí£¬minºÍminByÒ²Èç´Ë
          */
         SingleOutputStreamOperator<Tuple4<Integer, String, String, Integer>> tuple4Stream = beanStream.map(bean -> Tuple4.of(bean.getUid(), bean.getName(), bean.getGender(), bean.getFriends().size())).returns(new TypeHint<Tuple4<Integer, String, String, Integer>>() {
         });
@@ -120,24 +120,24 @@ public class _07_Transformation_Demos {
 
         tuple4Stream
                 .keyBy(tp -> tp.f2)
-                /*.max(3); */              // å„æ€§åˆ«ä¸­ï¼Œç”¨æˆ·å¥½å‹æ•°é‡æœ€å¤§å€¼
-                .maxBy(3);  // æ±‚å„æ€§åˆ«ä¸­ï¼Œå¥½å‹æ•°é‡æœ€å¤§çš„é‚£ä¸ªäºº
+                /*.max(3); */              // ¸÷ĞÔ±ğÖĞ£¬ÓÃ»§ºÃÓÑÊıÁ¿×î´óÖµ
+                .maxBy(3);  // Çó¸÷ĞÔ±ğÖĞ£¬ºÃÓÑÊıÁ¿×î´óµÄÄÇ¸öÈË
 
         /*genderUserFriendsMaxCount.print();*/
 
 
         /**
-         * reduce ç®—å­ ä½¿ç”¨æ¼”ç¤º
-         * éœ€æ±‚ï¼š æ±‚å„æ€§åˆ«ä¸­ï¼Œå¥½å‹æ•°é‡æœ€å¤§çš„é‚£ä¸ªäººï¼Œè€Œä¸”å¦‚æœå‰åä¸¤ä¸ªäººçš„å¥½å‹æ•°é‡ç›¸åŒï¼Œåˆ™è¾“å‡ºçš„ç»“æœä¸­ï¼Œä¹Ÿéœ€è¦å°†uid/nameç­‰ä¿¡æ¯æ›´æ–°æˆåé¢ä¸€æ¡æ•°æ®çš„å€¼
+         * reduce Ëã×Ó Ê¹ÓÃÑİÊ¾
+         * ĞèÇó£º Çó¸÷ĞÔ±ğÖĞ£¬ºÃÓÑÊıÁ¿×î´óµÄÄÇ¸öÈË£¬¶øÇÒÈç¹ûÇ°ºóÁ½¸öÈËµÄºÃÓÑÊıÁ¿ÏàÍ¬£¬ÔòÊä³öµÄ½á¹ûÖĞ£¬Ò²ĞèÒª½«uid/nameµÈĞÅÏ¢¸üĞÂ³ÉºóÃæÒ»ÌõÊı¾İµÄÖµ
          *
          */
         SingleOutputStreamOperator<Tuple4<Integer, String, String, Integer>> reduceResult = tuple4Stream.keyBy(tp -> tp.f2)
                 .reduce(new ReduceFunction<Tuple4<Integer, String, String, Integer>>() {
                     /**
                      *
-                     * @param value1  æ˜¯æ­¤å‰çš„èšåˆç»“æœ
-                     * @param value2  æ˜¯æœ¬æ¬¡çš„æ–°æ•°æ®
-                     * @return æ›´æ–°åçš„èšåˆç»“æœ
+                     * @param value1  ÊÇ´ËÇ°µÄ¾ÛºÏ½á¹û
+                     * @param value2  ÊÇ±¾´ÎµÄĞÂÊı¾İ
+                     * @return ¸üĞÂºóµÄ¾ÛºÏ½á¹û
                      * @throws Exception
                      */
                     @Override
@@ -154,8 +154,8 @@ public class _07_Transformation_Demos {
 
 
         /**
-         * ç”¨reduceï¼Œæ¥å®ç°sumç®—å­çš„åŠŸèƒ½
-         * æ±‚ï¼š  å¯¹ä¸Šé¢çš„  4å…ƒç»„æ•°æ®  1,ua,male,2  ï¼Œæ±‚å„æ€§åˆ«çš„å¥½å‹æ•°æ€»å’Œ
+         * ÓÃreduce£¬À´ÊµÏÖsumËã×ÓµÄ¹¦ÄÜ
+         * Çó£º  ¶ÔÉÏÃæµÄ  4Ôª×éÊı¾İ  1,ua,male,2  £¬Çó¸÷ĞÔ±ğµÄºÃÓÑÊı×ÜºÍ
          * TODO
          */
         SingleOutputStreamOperator<Tuple4<Integer, String, String, Integer>> reduceSum = tuple4Stream.keyBy(tp -> tp.f2)

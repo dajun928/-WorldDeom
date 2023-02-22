@@ -1,4 +1,4 @@
-package cn.flink.java.java;
+package cn.flink.java;
 
 import com.alibaba.fastjson.JSON;
 import lombok.*;
@@ -23,14 +23,14 @@ import java.util.Map;
  * @Site: www.51doit.com
  * @QQ: 657270652
  * @Date: 2022/4/23
- * @Desc: è‡ªå®šä¹‰sourceç®—å­
+ * @Desc: ×Ô¶¨ÒåsourceËã×Ó
  *
- * è‡ªå®šä¹‰source
- *    å¯ä»¥å®ç°   SourceFunction  æˆ–è€… RichSourceFunction , è¿™ä¸¤è€…éƒ½æ˜¯éå¹¶è¡Œçš„sourceç®—å­
- *    ä¹Ÿå¯å®ç°   ParallelSourceFunction  æˆ–è€… RichParallelSourceFunction , è¿™ä¸¤è€…éƒ½æ˜¯å¯å¹¶è¡Œçš„sourceç®—å­
+ * ×Ô¶¨Òåsource
+ *    ¿ÉÒÔÊµÏÖ   SourceFunction  »òÕß RichSourceFunction , ÕâÁ½Õß¶¼ÊÇ·Ç²¢ĞĞµÄsourceËã×Ó
+ *    Ò²¿ÉÊµÏÖ   ParallelSourceFunction  »òÕß RichParallelSourceFunction , ÕâÁ½Õß¶¼ÊÇ¿É²¢ĞĞµÄsourceËã×Ó
  *
- * -- å¸¦ Richçš„ï¼Œéƒ½æ‹¥æœ‰ open() ,close() ,getRuntimeContext() æ–¹æ³•
- * -- å¸¦ Parallelçš„ï¼Œéƒ½å¯å¤šå®ä¾‹å¹¶è¡Œæ‰§è¡Œ
+ * -- ´ø RichµÄ£¬¶¼ÓµÓĞ open() ,close() ,getRuntimeContext() ·½·¨
+ * -- ´ø ParallelµÄ£¬¶¼¿É¶àÊµÀı²¢ĞĞÖ´ĞĞ
  **/
 public class _06_CustomSourceFunction {
     public static void main(String[] args) throws Exception {
@@ -101,7 +101,7 @@ class MyRichSourceFunction extends RichSourceFunction<EventLog>{
 
     volatile boolean flag = true;
     /**
-     * sourceç»„ä»¶åˆå§‹åŒ–
+     * source×é¼ş³õÊ¼»¯
      * @param parameters
      * @throws Exception
      */
@@ -109,16 +109,16 @@ class MyRichSourceFunction extends RichSourceFunction<EventLog>{
     public void open(Configuration parameters) throws Exception {
 
         RuntimeContext runtimeContext = getRuntimeContext();
-        // å¯ä»¥ä»è¿è¡Œæ—¶ä¸Šä¸‹æ–‡ä¸­ï¼Œå–åˆ°æœ¬ç®—å­æ‰€å±çš„ task çš„taskå
+        // ¿ÉÒÔ´ÓÔËĞĞÊ±ÉÏÏÂÎÄÖĞ£¬È¡µ½±¾Ëã×ÓËùÊôµÄ task µÄtaskÃû
         String taskName = runtimeContext.getTaskName();
-        // å¯ä»¥ä»è¿è¡Œæ—¶ä¸Šä¸‹æ–‡ä¸­ï¼Œå–åˆ°æœ¬ç®—å­æ‰€å±çš„ subTask çš„subTaskId
+        // ¿ÉÒÔ´ÓÔËĞĞÊ±ÉÏÏÂÎÄÖĞ£¬È¡µ½±¾Ëã×ÓËùÊôµÄ subTask µÄsubTaskId
         int indexOfThisSubtask = runtimeContext.getIndexOfThisSubtask();
 
 
     }
 
     /**
-     * sourceç»„ä»¶ç”Ÿæˆæ•°æ®çš„è¿‡ç¨‹ï¼ˆæ ¸å¿ƒå·¥ä½œé€»è¾‘ï¼‰
+     * source×é¼şÉú³ÉÊı¾İµÄ¹ı³Ì£¨ºËĞÄ¹¤×÷Âß¼­£©
      * @param ctx
      * @throws Exception
      */
@@ -148,7 +148,7 @@ class MyRichSourceFunction extends RichSourceFunction<EventLog>{
 
 
     /**
-     * jobå–æ¶ˆè°ƒç”¨çš„æ–¹æ³•
+     * jobÈ¡Ïûµ÷ÓÃµÄ·½·¨
      */
     @Override
     public void cancel() {
@@ -156,12 +156,12 @@ class MyRichSourceFunction extends RichSourceFunction<EventLog>{
     }
 
     /**
-     * ç»„ä»¶å…³é—­è°ƒç”¨çš„æ–¹æ³•
+     * ×é¼ş¹Ø±Õµ÷ÓÃµÄ·½·¨
      * @throws Exception
      */
     @Override
     public void close() throws Exception {
-        System.out.println("ç»„ä»¶è¢«å…³é—­äº†.....");
+        System.out.println("×é¼ş±»¹Ø±ÕÁË.....");
     }
 }
 

@@ -1,4 +1,4 @@
-package cn.flink.java.java;
+package cn.flink.java;
 
 import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.tuple.Tuple2;

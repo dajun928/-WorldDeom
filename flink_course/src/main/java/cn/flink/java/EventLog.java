@@ -1,4 +1,4 @@
-package cn.flink.java.java;
+package cn.flink.java;
 
 import lombok.*;
 

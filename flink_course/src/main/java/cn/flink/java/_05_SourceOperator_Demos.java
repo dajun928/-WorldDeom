@@ -1,4 +1,4 @@
-package cn.flink.java.java;
+package cn.flink.java;
 
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.serialization.DeserializationSchema;
@@ -28,92 +28,92 @@ public class _05_SourceOperator_Demos {
         Configuration conf = new Configuration();
         conf.setInteger("rest.port", 8081);
         StreamExecutionEnvironment env = StreamExecutionEnvironment.createLocalEnvironmentWithWebUI(conf);
-        env.setParallelism(1);  // é»˜è®¤å¹¶è¡Œåº¦
+        env.setParallelism(1);  // Ä¬ÈÏ²¢ĞĞ¶È
 
         /**
-         * ä»é›†åˆå¾—åˆ°æ•°æ®æµ
+         * ´Ó¼¯ºÏµÃµ½Êı¾İÁ÷
          */
-        DataStreamSource<Integer> fromElements = env.fromElements(1, 2, 3, 4, 5);
-        fromElements.map(d -> d * 10)/*.print()*/;
+//        DataStreamSource<Integer> fromElements = env.fromElements(1, 2, 3, 4, 5);
+//        fromElements.map(d -> d * 10)/*.print()*/;
+//
+//        List<String> dataList = Arrays.asList("a", "b", "a", "c");
+//        // fromCollection·½·¨Ëù·µ»ØµÄsourceËã×Ó£¬ÊÇÒ»¸öµ¥²¢ĞĞ¶ÈµÄsourceËã×Ó
+//        DataStreamSource<String> fromCollection = env.fromCollection(dataList)/*.setParallelism(5)*/;  // µ¥²¢ĞĞËã×ÓÈç¹ûÏÔÊ½ÉèÖÃ>1µÄ²¢ĞĞ¶È£¬»áÅ×Òì³£
+//        fromCollection.map(String::toUpperCase).print();
 
-        List<String> dataList = Arrays.asList("a", "b", "a", "c");
-        // fromCollectionæ–¹æ³•æ‰€è¿”å›çš„sourceç®—å­ï¼Œæ˜¯ä¸€ä¸ªå•å¹¶è¡Œåº¦çš„sourceç®—å­
-        DataStreamSource<String> fromCollection = env.fromCollection(dataList)/*.setParallelism(5)*/;  // å•å¹¶è¡Œç®—å­å¦‚æœæ˜¾å¼è®¾ç½®>1çš„å¹¶è¡Œåº¦ï¼Œä¼šæŠ›å¼‚å¸¸
-        fromCollection.map(String::toUpperCase)/*.print()*/;
 
-
-        // fromParallelCollectionæ‰€è¿”å›çš„sourceç®—å­ï¼Œæ˜¯ä¸€ä¸ªå¤šå¹¶è¡Œåº¦çš„sourceç®—å­
-        DataStreamSource<LongValue> parallelCollection = env.fromParallelCollection(new LongValueSequenceIterator(1, 100), TypeInformation.of(LongValue.class)).setParallelism(2);
-        parallelCollection.map(lv -> lv.getValue() + 100)/*.print()*/;
-
-        DataStreamSource<Long> sequence = env.generateSequence(1, 100);
-        sequence.map(x -> x - 1)/*.print()*/;
+        // fromParallelCollectionËù·µ»ØµÄsourceËã×Ó£¬ÊÇÒ»¸ö¶à²¢ĞĞ¶ÈµÄsourceËã×Ó
+//        DataStreamSource<LongValue> parallelCollection = env.fromParallelCollection(new LongValueSequenceIterator(1, 100), TypeInformation.of(LongValue.class)).setParallelism(2);
+//        parallelCollection.map(lv -> lv.getValue() + 100)/*.print()*/;
+//
+//        DataStreamSource<Long> sequence = env.generateSequence(1, 100);
+//        sequence.map(x -> x - 1)/*.print()*/;
 
         /**
-         * ä» socket ç«¯å£è·å–æ•°æ®å¾—åˆ°æ•°æ®æµ
-         * socketTextStreamæ–¹æ³•äº§ç”Ÿçš„sourceç®—å­ï¼Œæ˜¯ä¸€ä¸ªå•å¹¶è¡Œåº¦çš„sourceç®—å­
+         * ´Ó socket ¶Ë¿Ú»ñÈ¡Êı¾İµÃµ½Êı¾İÁ÷
+         * socketTextStream·½·¨²úÉúµÄsourceËã×Ó£¬ÊÇÒ»¸öµ¥²¢ĞĞ¶ÈµÄsourceËã×Ó
          */
         // DataStreamSource<String> socketSource = env.socketTextStream("localhost", 9999);
         // socketSource.print();
 
 
         /**
-         * ä»æ–‡ä»¶å¾—åˆ°æ•°æ®æµ
+         * ´ÓÎÄ¼şµÃµ½Êı¾İÁ÷
          */
-        DataStreamSource<String> fileSource = env.readTextFile("flink_course/data/wc/input/wc.txt", "utf-8");
-        fileSource.map(String::toUpperCase)/*.print()*/;
-
-
-        // FileProcessingMode.PROCESS_ONCE  è¡¨ç¤ºï¼Œå¯¹æ–‡ä»¶åªè¯»ä¸€æ¬¡ï¼Œè®¡ç®—ä¸€æ¬¡ï¼Œç„¶åç¨‹åºå°±é€€å‡º
-        // FileProcessingMode.PROCESS_CONTINUOUSLY è¡¨ç¤ºï¼Œä¼šç›‘è§†ç€æ–‡ä»¶çš„å˜åŒ–ï¼Œä¸€æ—¦å‘ç°æ–‡ä»¶æœ‰å˜åŒ–ï¼Œåˆ™ä¼šå†æ¬¡å¯¹æ•´ä¸ªæ–‡ä»¶è¿›è¡Œé‡æ–°è®¡ç®—
-        DataStreamSource<String> fileSource2 = env.readFile(new TextInputFormat(null), "flink_course/data/wc/input/wc.txt", FileProcessingMode.PROCESS_CONTINUOUSLY, 1000);
-        fileSource2.map(String::toUpperCase)/*.print()*/;
+//        DataStreamSource<String> fileSource = env.readTextFile("flink_course/data/wc/input/wc.txt", "utf-8");
+//        fileSource.map(String::toUpperCase)/*.print()*/;
+//
+//
+//        // FileProcessingMode.PROCESS_ONCE  ±íÊ¾£¬¶ÔÎÄ¼şÖ»¶ÁÒ»´Î£¬¼ÆËãÒ»´Î£¬È»ºó³ÌĞò¾ÍÍË³ö
+//        // FileProcessingMode.PROCESS_CONTINUOUSLY ±íÊ¾£¬»á¼àÊÓ×ÅÎÄ¼şµÄ±ä»¯£¬Ò»µ©·¢ÏÖÎÄ¼şÓĞ±ä»¯£¬Ôò»áÔÙ´Î¶ÔÕû¸öÎÄ¼ş½øĞĞÖØĞÂ¼ÆËã
+//        DataStreamSource<String> fileSource2 = env.readFile(new TextInputFormat(null), "flink_course/data/wc/input/wc.txt", FileProcessingMode.PROCESS_CONTINUOUSLY, 1000);
+//        fileSource2.map(String::toUpperCase)/*.print()*/;
 
 
         /**
-         * å¼•å…¥æ‰©å±•åŒ… ï¼š  flink-connector-kafka
-         * ä»kafkaä¸­è¯»å–æ•°æ®å¾—åˆ°æ•°æ®æµ
+         * ÒıÈëÀ©Õ¹°ü £º  flink-connector-kafka
+         * ´ÓkafkaÖĞ¶ÁÈ¡Êı¾İµÃµ½Êı¾İÁ÷
          */
         KafkaSource<String> kafkaSource = KafkaSource.<String>builder()
-                // è®¾ç½®è®¢é˜…çš„ç›®æ ‡ä¸»é¢˜
-                .setTopics("tp01")
+                // ÉèÖÃ¶©ÔÄµÄÄ¿±êÖ÷Ìâs
+                .setTopics("topic_test")
 
-                // è®¾ç½®æ¶ˆè´¹è€…ç»„id
+                // ÉèÖÃÏû·ÑÕß×éid
                 .setGroupId("gp01")
 
-                // è®¾ç½®kafkaæœåŠ¡å™¨åœ°å€
-                .setBootstrapServers("doit01:9092")
+                // ÉèÖÃkafka·şÎñÆ÷µØÖ·
+                .setBootstrapServers("192.168.43.112:9092")
 
-                // èµ·å§‹æ¶ˆè´¹ä½ç§»çš„æŒ‡å®šï¼š
-                //    OffsetsInitializer.committedOffsets(OffsetResetStrategy.LATEST) æ¶ˆè´¹èµ·å§‹ä½ç§»é€‰æ‹©ä¹‹å‰æ‰€æäº¤çš„åç§»é‡ï¼ˆå¦‚æœæ²¡æœ‰ï¼Œåˆ™é‡ç½®ä¸ºLATESTï¼‰
-                //    OffsetsInitializer.earliest()  æ¶ˆè´¹èµ·å§‹ä½ç§»ç›´æ¥é€‰æ‹©ä¸º â€œæœ€æ—©â€
-                //    OffsetsInitializer.latest()  æ¶ˆè´¹èµ·å§‹ä½ç§»ç›´æ¥é€‰æ‹©ä¸º â€œæœ€æ–°â€
-                //    OffsetsInitializer.offsets(Map<TopicPartition,Long>)  æ¶ˆè´¹èµ·å§‹ä½ç§»é€‰æ‹©ä¸ºï¼šæ–¹æ³•æ‰€ä¼ å…¥çš„æ¯ä¸ªåˆ†åŒºå’Œå¯¹åº”çš„èµ·å§‹åç§»é‡
+                // ÆğÊ¼Ïû·ÑÎ»ÒÆµÄÖ¸¶¨£º
+                //    OffsetsInitializer.committedOffsets(OffsetResetStrategy.LATEST) Ïû·ÑÆğÊ¼Î»ÒÆÑ¡ÔñÖ®Ç°ËùÌá½»µÄÆ«ÒÆÁ¿£¨Èç¹ûÃ»ÓĞ£¬ÔòÖØÖÃÎªLATEST£©
+                //    OffsetsInitializer.earliest()  Ïû·ÑÆğÊ¼Î»ÒÆÖ±½ÓÑ¡ÔñÎª ¡°×îÔç¡±
+                //    OffsetsInitializer.latest()  Ïû·ÑÆğÊ¼Î»ÒÆÖ±½ÓÑ¡ÔñÎª ¡°×îĞÂ¡±
+                //    OffsetsInitializer.offsets(Map<TopicPartition,Long>)  Ïû·ÑÆğÊ¼Î»ÒÆÑ¡ÔñÎª£º·½·¨Ëù´«ÈëµÄÃ¿¸ö·ÖÇøºÍ¶ÔÓ¦µÄÆğÊ¼Æ«ÒÆÁ¿
                 .setStartingOffsets(OffsetsInitializer.committedOffsets(OffsetResetStrategy.LATEST))
 
-                // è®¾ç½®valueæ•°æ®çš„ååºåˆ—åŒ–å™¨
+                // ÉèÖÃvalueÊı¾İµÄ·´ĞòÁĞ»¯Æ÷
                 .setValueOnlyDeserializer(new SimpleStringSchema())
 
-                // å¼€å¯kafkaåº•å±‚æ¶ˆè´¹è€…çš„è‡ªåŠ¨ä½ç§»æäº¤æœºåˆ¶
-                //    å®ƒä¼šæŠŠæœ€æ–°çš„æ¶ˆè´¹ä½ç§»æäº¤åˆ°kafkaçš„consumer_offsetsä¸­
-                //    å°±ç®—æŠŠè‡ªåŠ¨ä½ç§»æäº¤æœºåˆ¶å¼€å¯ï¼ŒKafkaSourceä¾ç„¶ä¸ä¾èµ–è‡ªåŠ¨ä½ç§»æäº¤æœºåˆ¶
-                //    ï¼ˆå®•æœºé‡å¯æ—¶ï¼Œä¼˜å…ˆä»flinkè‡ªå·±çš„çŠ¶æ€ä¸­å»è·å–åç§»é‡<æ›´å¯é >ï¼‰
+                // ¿ªÆôkafkaµ×²ãÏû·ÑÕßµÄ×Ô¶¯Î»ÒÆÌá½»»úÖÆ
+                //    Ëü»á°Ñ×îĞÂµÄÏû·ÑÎ»ÒÆÌá½»µ½kafkaµÄconsumer_offsetsÖĞ
+                //    ¾ÍËã°Ñ×Ô¶¯Î»ÒÆÌá½»»úÖÆ¿ªÆô£¬KafkaSourceÒÀÈ»²»ÒÀÀµ×Ô¶¯Î»ÒÆÌá½»»úÖÆ
+                //    £¨å´»úÖØÆôÊ±£¬ÓÅÏÈ´Óflink×Ô¼ºµÄ×´Ì¬ÖĞÈ¥»ñÈ¡Æ«ÒÆÁ¿<¸ü¿É¿¿>£©
                 .setProperty("auto.offset.commit", "true")
 
-                // æŠŠæœ¬sourceç®—å­è®¾ç½®æˆ  BOUNDEDå±æ€§ï¼ˆæœ‰ç•Œæµï¼‰
-                //     å°†æ¥æœ¬sourceå»è¯»å–æ•°æ®çš„æ—¶å€™ï¼Œè¯»åˆ°æŒ‡å®šçš„ä½ç½®ï¼Œå°±åœæ­¢è¯»å–å¹¶é€€å‡º
-                //     å¸¸ç”¨äºè¡¥æ•°æˆ–è€…é‡è·‘æŸä¸€æ®µå†å²æ•°æ®
+                // °Ñ±¾sourceËã×ÓÉèÖÃ³É  BOUNDEDÊôĞÔ£¨ÓĞ½çÁ÷£©
+                //     ½«À´±¾sourceÈ¥¶ÁÈ¡Êı¾İµÄÊ±ºò£¬¶Áµ½Ö¸¶¨µÄÎ»ÖÃ£¬¾ÍÍ£Ö¹¶ÁÈ¡²¢ÍË³ö
+                //     ³£ÓÃÓÚ²¹Êı»òÕßÖØÅÜÄ³Ò»¶ÎÀúÊ·Êı¾İ
                 // .setBounded(OffsetsInitializer.committedOffsets())
 
-                // æŠŠæœ¬sourceç®—å­è®¾ç½®æˆ  UNBOUNDEDå±æ€§ï¼ˆæ— ç•Œæµï¼‰
-                //     ä½†æ˜¯å¹¶ä¸ä¼šä¸€ç›´è¯»æ•°æ®ï¼Œè€Œæ˜¯è¾¾åˆ°æŒ‡å®šä½ç½®å°±åœæ­¢è¯»å–ï¼Œä½†ç¨‹åºä¸é€€å‡º
-                //     ä¸»è¦åº”ç”¨åœºæ™¯ï¼šéœ€è¦ä»kafkaä¸­è¯»å–æŸä¸€æ®µå›ºå®šé•¿åº¦çš„æ•°æ®ï¼Œç„¶åæ‹¿ç€è¿™æ®µæ•°æ®å»è·Ÿå¦å¤–ä¸€ä¸ªçœŸæ­£çš„æ— ç•Œæµè”åˆå¤„ç†
+                // °Ñ±¾sourceËã×ÓÉèÖÃ³É  UNBOUNDEDÊôĞÔ£¨ÎŞ½çÁ÷£©
+                //     µ«ÊÇ²¢²»»áÒ»Ö±¶ÁÊı¾İ£¬¶øÊÇ´ïµ½Ö¸¶¨Î»ÖÃ¾ÍÍ£Ö¹¶ÁÈ¡£¬µ«³ÌĞò²»ÍË³ö
+                //     Ö÷ÒªÓ¦ÓÃ³¡¾°£ºĞèÒª´ÓkafkaÖĞ¶ÁÈ¡Ä³Ò»¶Î¹Ì¶¨³¤¶ÈµÄÊı¾İ£¬È»ºóÄÃ×ÅÕâ¶ÎÊı¾İÈ¥¸úÁíÍâÒ»¸öÕæÕıµÄÎŞ½çÁ÷ÁªºÏ´¦Àí
                 //.setUnbounded(OffsetsInitializer.latest())
 
                 .build();
 
-        // env.addSource();  //  æ¥æ”¶çš„æ˜¯  SourceFunctionæ¥å£çš„ å®ç°ç±»
-        DataStreamSource<String> streamSource = env.fromSource(kafkaSource, WatermarkStrategy.noWatermarks(), "kfk-source");//  æ¥æ”¶çš„æ˜¯ Source æ¥å£çš„å®ç°ç±»
+//        env.addSource();  //  ½ÓÊÕµÄÊÇ  SourceFunction½Ó¿ÚµÄ ÊµÏÖÀà
+        DataStreamSource<String> streamSource = env.fromSource(kafkaSource, WatermarkStrategy.noWatermarks(), "kfk-source");//  ½ÓÊÕµÄÊÇ Source ½Ó¿ÚµÄÊµÏÖÀà
         streamSource.print();
 
 
