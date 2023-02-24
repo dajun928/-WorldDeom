@@ -10,8 +10,21 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
 /**
- * 通过socket数据源，去请求一个socket服务（doit01:9999）得到数据流
+ * 通过socket数据源，去请求一个socket服务（192.168.43.132:9999）得到数据流
  * 然后统计数据流中出现的单词及其个数 java 语言实现
+ *
+ * input  java scala php c++ java scala php java scala java
+ * output
+ * 10> (php,1)
+ * 4> (java,1)
+ * 9> (c++,1)
+ * 1> (scala,1)
+ * 10> (php,2)
+ * 4> (java,2)
+ * 1> (scala,2)
+ * 4> (java,3)
+ * 1> (scala,3)
+ * 4> (java,4)
  */
 public class _01_StreamWordCount {
 
@@ -49,8 +62,6 @@ public class _01_StreamWordCount {
 
         // 触发程序的提交运行
         env.execute();
-
-
     }
 }
 
