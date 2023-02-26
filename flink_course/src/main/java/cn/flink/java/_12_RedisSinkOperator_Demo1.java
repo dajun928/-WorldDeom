@@ -42,10 +42,10 @@ public class _12_RedisSinkOperator_Demo1 {
         DataStreamSource<EventLog> streamSource = env.addSource(new MySourceFunction());
 
         // eventLog数据插入redis，你想用什么结构来存储？
-        FlinkJedisPoolConfig config = new FlinkJedisPoolConfig.Builder().setHost("doit01").build();
+        FlinkJedisPoolConfig config = new FlinkJedisPoolConfig.Builder().setHost("localhost").build();
 
         RedisSink<EventLog> redisSink = new RedisSink<>(config, new StringInsertMapper());
-
+        streamSource.print();
         streamSource.addSink(redisSink);
 
         env.execute();
