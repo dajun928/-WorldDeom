@@ -18,7 +18,7 @@ public class _04_WordCount_LambdaTest {
         // 流式处理入口环境
         StreamExecutionEnvironment envStream = StreamExecutionEnvironment.getExecutionEnvironment();
 
-        DataStreamSource<String> streamSource = envStream.readTextFile("flink_course/src/main/java/cn/flink/data/wc.txt");
+        DataStreamSource<String> streamSource = envStream.readTextFile("flink_course/src/main/java/cn/flinkcore/data/wc.txt");
 
         // 先把句子变大写
         /* 从map算子接收的MapFunction接口实现来看，它是一个单抽象方法的接口
