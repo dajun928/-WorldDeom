@@ -27,7 +27,7 @@ public class _03_StreamBatchWordCount {
         // streamEnv.setRuntimeMode(RuntimeExecutionMode.AUTOMATIC);
 
         // 读文件 得到  dataStream
-        DataStreamSource<String> streamSource = streamEnv.readTextFile("flink_course/src/main/java/cn/flink/data/wc.txt");
+        DataStreamSource<String> streamSource = streamEnv.readTextFile("flink_course/src/main/java/cn/flinkcore/data/wc.txt");
 
 
         // 调用dataStream的算子做计算
