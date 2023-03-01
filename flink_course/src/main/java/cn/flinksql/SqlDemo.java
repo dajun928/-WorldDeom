@@ -68,7 +68,7 @@ public class SqlDemo {
         String sql_1 = "select * from stu";
         String sql_2 = "select id,name,age from stu";
         String sql_3 = "select * from stu";
-        /*tableEnv.sqlQuery(sql_3).execute().print();*/
+        tableEnv.sqlQuery(sql_3).execute().print();
 
         tableEnv.from("stu").execute().print();
 
