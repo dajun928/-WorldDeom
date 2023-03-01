@@ -19,7 +19,7 @@ public class _02_BatchWordCount {
         ExecutionEnvironment batchEnv = ExecutionEnvironment.getExecutionEnvironment();
 
         // 读数据  -- : 批计算中得到的数据抽象，是一个 DataSet
-        DataSource<String> stringDataSource = batchEnv.readTextFile("flink_course/src/main/java/cn/flink/data/");
+        DataSource<String> stringDataSource = batchEnv.readTextFile("flink_course/src/main/java/cn/flinkcore/data/");
 
         // 在dataset上调用各种dataset的算子
         stringDataSource
