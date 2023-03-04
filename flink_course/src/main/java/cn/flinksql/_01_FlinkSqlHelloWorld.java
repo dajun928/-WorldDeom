@@ -9,10 +9,10 @@ import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 /***
  * @author hunter.d
  * @qq 657270652
- * @wx haitao-duan
+ * @wx FlinkSqlHelloWorld
  * @date 2022/3/14
  **/
-public class FlinkSqlDemo {
+public class _01_FlinkSqlHelloWorld {
     public static void main(String[] args) throws Exception {
 
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
