@@ -19,8 +19,8 @@
         <kafka.version>2.3.1</kafka.version>
         <flink.version>1.14.4</flink.version>
     </properties>
-    <dependencies>
 
+    <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -74,6 +74,17 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.9.5</version>
         </dependency>
+
+
+<!--        https://github.com/ververica/flink-cdc-connectors-->
+<!--        <dependency>-->
+<!--            <groupId>com.ververica</groupId>-->
+<!--            &lt;!&ndash; add the dependency matching your database &ndash;&gt;-->
+<!--            <artifactId>flink-connector-mysql-cdc</artifactId>-->
+<!--            &lt;!&ndash; The dependency is available only for stable releases, SNAPSHOT dependency need build by yourself. &ndash;&gt;-->
+<!--            <version>2.4-SNAPSHOT</version>-->
+<!--        </dependency>-->
+
     </dependencies>
 
 
