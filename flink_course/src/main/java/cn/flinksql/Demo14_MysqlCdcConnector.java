@@ -13,8 +13,8 @@ public class Demo14_MysqlCdcConnector {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         // ¿ªÆôcheckpoint
-        env.enableCheckpointing(1000, CheckpointingMode.EXACTLY_ONCE);
-        env.getCheckpointConfig().setCheckpointStorage("file:///d:/ckpt");
+//        env.enableCheckpointing(1000, CheckpointingMode.EXACTLY_ONCE);
+//        env.getCheckpointConfig().setCheckpointStorage("file:///d:/ckpt");
 
         StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
 
@@ -29,7 +29,7 @@ public class Demo14_MysqlCdcConnector {
                 " 'port' = '3306',\n" +
                 " 'username' = 'root',\n" +
                 " 'password' = '123456',\n" +
-                " 'database-name' = 'test',\n" +
+                " 'database-name' = 'flink_learn',\n" +
                 " 'table-name' = 'product_info' \n" +
                 " )");
 
