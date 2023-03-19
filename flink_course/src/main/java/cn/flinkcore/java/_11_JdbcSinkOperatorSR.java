@@ -45,6 +45,7 @@ public class _11_JdbcSinkOperatorSR {
         // 构造好一个数据流
         DataStreamSource<EventLog> streamSource = env.addSource(new MySourceFunction());
 
+
         /**
          *  一、 不保证 EOS语义的方式
          */
