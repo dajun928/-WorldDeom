@@ -21,7 +21,7 @@ import java.util.UUID;
 
 /**
  * @author zhangjun 欢迎关注我的公众号[大数据技术与应用实战],获取更多精彩实战内容
- * <p>
+ *
  * 在电商网站买了商品，订单完成之后，如果用户24小时之内没评论，系统自动好评。
  * 我们通过flink的定时器来简单的实现这个功能
  * https://blog.csdn.net/zhangjun5965/article/details/106796423/?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_utm_term~default-3--blog-127168064.pc_relevant_3mothn_strategy_recovery&spm=1001.2101.3001.4242.3&utm_relevant_index=6
