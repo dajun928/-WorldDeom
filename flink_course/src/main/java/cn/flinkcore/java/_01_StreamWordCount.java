@@ -12,7 +12,7 @@ import org.apache.flink.util.Collector;
 /**
  * 通过socket数据源，去请求一个socket服务（192.168.43.132:9999）得到数据流
  * 然后统计数据流中出现的单词及其个数 java 语言实现
- *
+ * windows nc -l -p 9999
  * input  java scala php c++ java scala php java scala java
  * output
  * 10> (php,1)
