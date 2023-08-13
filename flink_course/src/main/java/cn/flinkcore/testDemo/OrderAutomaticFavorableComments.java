@@ -1,4 +1,4 @@
-package cn.flinkcore.test;
+package cn.flinkcore.testDemo;
 
 import org.apache.flink.api.common.state.MapState;
 import org.apache.flink.api.common.state.MapStateDescriptor;

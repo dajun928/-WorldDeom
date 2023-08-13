@@ -1,4 +1,4 @@
-package cn.flinkcore.test;
+package cn.flinkcore.testDemo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
