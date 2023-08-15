@@ -34,7 +34,7 @@ public class _01_StreamWordCount {
 
         // 通过source算子，把socket数据源加载为一个dataStream（数据流）
 //        SingleOutputStreamOperator<String> source = env.socketTextStream("192.168.43.132", 9999);
-        SingleOutputStreamOperator<String> source = env.socketTextStream("localhost", 9999);
+        SingleOutputStreamOperator<String> source = env.socketTextStream("hadoop100", 9999);
 
         // 然后通过算子对数据流进行各种转换（计算逻辑）
         SingleOutputStreamOperator<Tuple2<String, Integer>> words = source.flatMap(new FlatMapFunction<String, Tuple2<String, Integer>>() {
